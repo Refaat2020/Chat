@@ -58,10 +58,34 @@ class DatabaseMethods{
   }
 
 
-  getChatRooms(String username)async{
-    return await Firestore.instance.
-    collection("chatRoom").
-    where("users",arrayContains: username)
-        .snapshots();
+   getChatRooms(String username)async {
+     return await Firestore.instance.
+     collection("chatRoom").
+     where("users", arrayContains: username)
+
+         .snapshots();
+   }
+
+  removeChat({String chatRoomId, String chatId})async {
+    await Firestore.instance
+        .collection("chatRoom")
+        .document(chatRoomId)
+        .collection("chats")
+        .document(chatId)
+        .delete();
+  }
+
+  Future<void> removeChatRoom(String chatRoomId) async {
+    Firestore.instance.collection("chatRoom").document(chatRoomId).delete();
+    Firestore.instance
+        .collection("chatRoom")
+        .document(chatRoomId)
+        .collection("chats")
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.documents) {
+        doc.reference.delete();
+      }
+    });
   }
 }

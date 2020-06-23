@@ -11,9 +11,8 @@ import 'package:get_it/get_it.dart';
 class ConversationScreen extends StatefulWidget {
 
   String chatRoomID;
-  Stream chatMessageStream;
 
-  ConversationScreen({this.chatRoomID,this.chatMessageStream});
+  ConversationScreen({this.chatRoomID});
 
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
@@ -24,6 +23,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
 TextEditingController _messagesEditController = TextEditingController();
 
   GetIt locator = GetIt.instance;
+Stream chatMessageStream;
 
 
 
@@ -33,7 +33,7 @@ QuerySnapshot snapshot;
 Widget chatMessageList(){
 
   return StreamBuilder(
-    stream: widget.chatMessageStream,
+    stream: chatMessageStream,
       builder: ( context , snapshot){
       return snapshot.hasData ? ListView.builder(
         itemCount: snapshot.data.documents.length,
@@ -71,7 +71,7 @@ void initState() {
   // TODO: implement initState
   locator<DatabaseMethods>().getChats(widget.chatRoomID).then((value){
     setState(() {
-      widget.chatMessageStream  = value;
+      chatMessageStream  = value;
 
     });
   });

@@ -70,7 +70,7 @@ createChatRoomAndStartConversation(String username,BuildContext context ){
     List<String>users = [username,Constants.myName];
     Map<String , dynamic> chatRoomMap = {
       "users" : users,
-      "chatroomid":chatRoomId,
+      "chatroomId":chatRoomId,
     };
     locator<DatabaseMethods>().createChatRoom(chatRoomId, chatRoomMap);
     Navigator.push(context, MaterialPageRoute(builder: (_)=>ConversationScreen(chatRoomID: chatRoomId,)));
@@ -79,6 +79,7 @@ createChatRoomAndStartConversation(String username,BuildContext context ){
   }
 
 }
+
 getChatRoomId(String a , String b){
   if(a.substring(0,1).codeUnitAt(0) > b.substring(0,1).codeUnitAt(0)){
     return "$b\_$a";
