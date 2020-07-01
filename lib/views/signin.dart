@@ -23,6 +23,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+
 QuerySnapshot snapshotUserInfo;
 
   final TextEditingController _emailEditController = TextEditingController();

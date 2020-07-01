@@ -1,4 +1,5 @@
 import 'package:chat/helper/helper_fuctions.dart';
+import 'package:chat/logic/searchMob.dart';
 import 'package:chat/services/auth.dart';
 import 'package:chat/services/database.dart';
 import 'package:get_it/get_it.dart';
@@ -10,5 +11,6 @@ void setupLocator(){
 locator.registerLazySingleton(() => AuthServices());
 locator.registerLazySingleton(() => DatabaseMethods());
 locator.registerLazySingleton(() => HelperFunctions());
+locator.registerLazySingleton(() => SearchStore());
 }
 

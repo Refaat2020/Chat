@@ -2,18 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseMethods{
 
+
+
   ///for upload user data
   Future uploadUserInfo(userMap )async{
     await  Firestore.instance.collection("users")
       .add(userMap);
   }
 
-  ///for fetch user account
-  Future getUserByName(String username)async{
-    return await Firestore.instance.collection("users")
-        .where("name" , isEqualTo: username ).getDocuments();
-
-  }
 
   ///for fetch user account
   Future getUserByEmail(String email)async{

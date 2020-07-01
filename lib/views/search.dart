@@ -1,11 +1,9 @@
 
-import 'package:chat/helper/constant.dart';
-import 'package:chat/services/database.dart';
-import 'package:chat/helper/helper_fuctions.dart';
+import 'package:chat/logic/searchMob.dart';
 import 'package:chat/widgets/search_tile.dart';
 import 'package:chat/widgets/widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 
@@ -15,51 +13,29 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  QuerySnapshot searchSnapshot;
-String _myName;
-  GetIt locator = GetIt.instance;
+
+
   TextEditingController _searchEditingController  = TextEditingController();
 
-  initiateSearch(){
-    locator<DatabaseMethods>().getUserByName(_searchEditingController.text).then((val){
-      setState(() {
-        searchSnapshot = val;
 
-      });
-    });
+  GetIt locator = GetIt.instance;
 
-  }
-
-  getUserInfo()async{
-    _myName = await HelperFunctions.getUserNameSharedPreference();
-    setState(() {
-
-    });
-print("$_myName");
-  }
 
   Widget searchList(){
-    return searchSnapshot != null ?  ListView.builder(
+    return locator<SearchStore>().searchSnapshot != null ?  ListView.builder(
       shrinkWrap: true,
         padding: EdgeInsets.symmetric(vertical: 1),
        addRepaintBoundaries: true,
-        itemCount: searchSnapshot.documents.length,
+        itemCount: locator<SearchStore>().searchSnapshot.documents.length,
         itemBuilder: (context , index){
           return SearchTile(
-            userName: searchSnapshot.documents[index].data["name"],
-            email: searchSnapshot.documents[index].data["email"],
+            userName: locator<SearchStore>().searchSnapshot.documents[index].data["name"],
+            email: locator<SearchStore>().searchSnapshot.documents[index].data["email"],
           );
         },
     ): Container();
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    initiateSearch();
-    getUserInfo();
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
@@ -93,7 +69,7 @@ print("$_myName");
 
                   GestureDetector(
                     onTap: (){
-                      initiateSearch();
+                      locator<SearchStore>().initiateSearch(_searchEditingController.text);
                       },
 
                     child: Container(
@@ -118,7 +94,12 @@ print("$_myName");
               ),
             ),
             SizedBox(height: 10,),
-            searchList(),
+            Observer(
+              builder: (_){
+                 return searchList();
+              },
+
+            ),
           ],
         ),
       ),

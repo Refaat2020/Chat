@@ -19,10 +19,10 @@ class HistoryList extends StatelessWidget {
     return InkWell(
       highlightColor: Colors.blue,
       onLongPress: (){
-        locator<DatabaseMethods>().removeChatRoom(chatRoomId);
+        locator<DatabaseMethods>().removeChatRoom("chatRoom");
       },
       onTap: (){
-
+          ///go to conversation
         locator<HelperFunctions>().createChatRoomAndStartConversation(username, context);
       },
       child: Container(
@@ -42,7 +42,11 @@ class HistoryList extends StatelessWidget {
             SizedBox(
               width: 8,
             ),
-            Text(username , style: simpleStyle(),),
+            Text(username , style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: ScreenUtil().setSp(48,allowFontScalingSelf: true),
+            ),),
           ],
         ),
       ),
